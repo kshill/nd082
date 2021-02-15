@@ -124,12 +124,12 @@ resource "azurerm_subnet" "internal_subnet" {
 }
 
 
-resource "azurerm_subnet" "azure_bastion_subnet" {
+/* resource "azurerm_subnet" "azure_bastion_subnet" {
   name                 = "${var.project}-bastion-subnet"
   resource_group_name  = azurerm_resource_group.main_rg.name
   virtual_network_name = azurerm_virtual_network.main_vnet.name
   address_prefixes     = ["10.0.1.0/27"]
-}
+} */
 
 resource "azurerm_public_ip" "public_ip" {
   name                = "${var.project}-loadbalancer-inbound-IP"
@@ -161,7 +161,7 @@ resource "azurerm_public_ip" "outbound_public_ip" {
   )
 }
 
-resource "azurerm_public_ip" "bastion_public_ip" {
+/* resource "azurerm_public_ip" "bastion_public_ip" {
   name                = "${var.project}-bastion-public-ip"
   resource_group_name = azurerm_resource_group.main_rg.name
   location            = var.location
@@ -174,7 +174,7 @@ resource "azurerm_public_ip" "bastion_public_ip" {
       "Contact", "Kita Shillingford"
     )
   )
-}
+} */
 
 resource "azurerm_network_security_group" "udacity_webserver_ingress_ng" {
   name                = "${var.project}-webserver-ng"
@@ -182,7 +182,7 @@ resource "azurerm_network_security_group" "udacity_webserver_ingress_ng" {
   resource_group_name = azurerm_resource_group.main_rg.name
 
   security_rule {
-    name                       = "allow_http_to_webservers"
+    name                       = "allow_http_from_lb_to_webservers"
     priority                   = 101
     direction                  = "Inbound"
     access                     = "Allow"
@@ -202,7 +202,7 @@ resource "azurerm_network_security_group" "udacity_webserver_ingress_ng" {
 }
 
 resource "azurerm_network_security_rule" "allow_vnet_ng_rule" {
-  name                        = "allow_vnet_access"
+  name                        = "allow_vnet_to_vnet_access"
   priority                    = 102
   direction                   = "Inbound"
   access                      = "Allow"
@@ -225,6 +225,20 @@ resource "azurerm_network_security_rule" "allow_internet_http_ng_rule" {
   destination_port_range      = "*"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.main_rg.name
+  network_security_group_name = azurerm_network_security_group.udacity_webserver_ingress_ng.name
+}
+
+resource "azurerm_network_security_rule" "deny_internet_to_vnet_ng_rule" {
+  name                        = "deny_internet_to_vnet"
+  priority                    = 120
+  direction                   = "Inbound"
+  access                      = "Deny"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "Internet"
+  destination_address_prefix  = "VirtualNetwork"
   resource_group_name         = azurerm_resource_group.main_rg.name
   network_security_group_name = azurerm_network_security_group.udacity_webserver_ingress_ng.name
 }

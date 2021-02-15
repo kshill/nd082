@@ -1,5 +1,23 @@
 # Azure Infrastructure Operations Project: Deploying a scalable IaaS web server in Azure
 
+**Table Of Content**
+
+* [Introduction](#Introduction)
+* [Getting Started](#GettingStarted)
+* [Dependencies](#Dependencies)
+* Instructions
+    * [Create Azure App Registration](#Create%20Azure%20App%20Registration)
+    * [Grant the App Registration Subscription Permissions](#Grant%20the%20App%20Registration%20Subscription%20Permissions)
+    * [Setting Up Environmental Variables for Packer](#Setting%20Up%20Environmental%20Variables%20for%20Packer)
+    * [Creating Packer Resource Group](#Creating%20Packer%20Resource%20Group)
+    * [Create Packer Image](#Create%20Packer%20Image)
+    * [Configure Terraform](#Configure%20Terraform)
+    * [Build Solution Using Terraform](#Build%20Solution%20Using%20Terraform)
+* [Output](#Output)
+* [References](#References)
+
+
+
 ## Introduction
 For this project, you will write a Packer template and a Terraform template to deploy a customizable, scalable web server in Azure.
 
@@ -104,7 +122,7 @@ For this project, you will write a Packer template and a Terraform template to d
     instance_count = 1
     ```
 
-### Create Azure Web Server Solution Using Terraform
+### Build Solution Using Terraform
 
 1. Open Terminal and navigate to the "C1 - Azure Infrastructure Operations/project/starter_files/IaC"
 1. At the terminal prompt, execute the following command to create the Azure Web Server Solution:

@@ -123,14 +123,6 @@ resource "azurerm_subnet" "internal_subnet" {
   address_prefixes     = ["10.0.0.0/24"]
 }
 
-
-/* resource "azurerm_subnet" "azure_bastion_subnet" {
-  name                 = "${var.project}-bastion-subnet"
-  resource_group_name  = azurerm_resource_group.main_rg.name
-  virtual_network_name = azurerm_virtual_network.main_vnet.name
-  address_prefixes     = ["10.0.1.0/27"]
-} */
-
 resource "azurerm_public_ip" "public_ip" {
   name                = "${var.project}-loadbalancer-inbound-IP"
   resource_group_name = azurerm_resource_group.main_rg.name
@@ -161,22 +153,7 @@ resource "azurerm_public_ip" "outbound_public_ip" {
   )
 }
 
-/* resource "azurerm_public_ip" "bastion_public_ip" {
-  name                = "${var.project}-bastion-public-ip"
-  resource_group_name = azurerm_resource_group.main_rg.name
-  location            = var.location
-  allocation_method   = "Static"
-  sku = "Standard"
-
-  tags = merge (
-    local.common_tags,
-    map(
-      "Contact", "Kita Shillingford"
-    )
-  )
-} */
-
-resource "azurerm_network_security_group" "udacity_webserver_ingress_ng" {
+ resource "azurerm_network_security_group" "udacity_webserver_ingress_ng" {
   name                = "${var.project}-webserver-ng"
   location            = var.location
   resource_group_name = azurerm_resource_group.main_rg.name
@@ -201,44 +178,17 @@ resource "azurerm_network_security_group" "udacity_webserver_ingress_ng" {
   )
 }
 
-resource "azurerm_network_security_rule" "allow_vnet_ng_rule" {
-  name                        = "allow_vnet_to_vnet_access"
-  priority                    = 102
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "*"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "VirtualNetwork"
-  destination_address_prefix  = "VirtualNetwork"
-  resource_group_name         = azurerm_resource_group.main_rg.name
-  network_security_group_name = azurerm_network_security_group.udacity_webserver_ingress_ng.name
-}
-
-resource "azurerm_network_security_rule" "allow_internet_http_ng_rule" {
-  name                        = "allow_vnet_all"
-  priority                    = 103
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "TCP"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = azurerm_resource_group.main_rg.name
-  network_security_group_name = azurerm_network_security_group.udacity_webserver_ingress_ng.name
-}
-
-resource "azurerm_network_security_rule" "deny_internet_to_vnet_ng_rule" {
-  name                        = "deny_internet_to_vnet"
-  priority                    = 120
-  direction                   = "Inbound"
-  access                      = "Deny"
-  protocol                    = "*"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "Internet"
-  destination_address_prefix  = "VirtualNetwork"
+resource "azurerm_network_security_rule" "nsg_rules" {
+  for_each = local.nsgrules
+  name                        = each.key
+  priority                    = each.value.priority
+  direction                   = each.value.direction
+  access                      = each.value.access
+  protocol                    = each.value.protocol
+  source_port_range           = each.value.source_port_range
+  destination_port_range      = each.value.destination_port_range
+  source_address_prefix       = each.value.source_address_prefix
+  destination_address_prefix  = each.value.destination_address_prefix
   resource_group_name         = azurerm_resource_group.main_rg.name
   network_security_group_name = azurerm_network_security_group.udacity_webserver_ingress_ng.name
 }
@@ -254,7 +204,7 @@ resource "azurerm_application_security_group" "udacity_webserver_asg" {
       "Contact", "Kita Shillingford"
     )
   )
-}
+} 
 
 ########### Loadbalancer ###########
 

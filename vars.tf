@@ -47,3 +47,46 @@ locals {
     "Project Name" = var.project
   }
 }
+
+
+locals {
+  nsgrules = {
+    
+    vnet_to_vnet_access = {
+      name                        = "allow_vnet_to_vnet_access"
+      priority                    = 102
+      direction                   = "Inbound"
+      access                      = "Allow"
+      protocol                    = "*"
+      source_port_range           = "*"
+      destination_port_range      = "*"
+      source_address_prefix       = "VirtualNetwork"
+      destination_address_prefix  = "VirtualNetwork"
+
+    }
+
+    internet_to_lb_access = {
+      name                        = "allow_vnet_all"
+      priority                    = 103
+      direction                   = "Inbound"
+      access                      = "Allow"
+      protocol                    = "TCP"
+      source_port_range           = "*"
+      destination_port_range      = "*"
+      source_address_prefix       = "*"
+      destination_address_prefix  = "*"
+    }
+
+    deny_internet_to_vnet_access = {
+      name                        = "deny_internet_to_vnet"
+      priority                    = 120
+      direction                   = "Inbound"
+      access                      = "Deny"
+      protocol                    = "*"
+      source_port_range           = "*"
+      destination_port_range      = "*"
+      source_address_prefix       = "Internet"
+      destination_address_prefix  = "VirtualNetwork"
+    }
+  }
+}

@@ -119,7 +119,8 @@ For this project, you will write a Packer template and a Terraform template to d
     tenantid = "<tenant ID>"
     admin_username = "<admin username"
     admin_password = "<admin password>"
-    instance_count = 1
+    instance_count = 2
+    project = "nd082"
     ```
 
 ### Build Solution Using Terraform

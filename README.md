@@ -158,7 +158,6 @@ The nd082 project builds a scalable Nginx webserver(s) using an Azure virtual ma
     * Network Security Group
     * Standard Load Balancer with Health Probes
     * Virtual Machine Scale Set - I chose to use a virtual machine scale set because a scale set is an implicit availibility set with 5 fault domains. A virtual machine scale set allows one to control the number of nodes that are in the scale set but it also provides some advanced capabilities for scaling the instances up/down based on environmental factors (e.g. CPU, Memory, Queues, etc..). A virtual machines scale set also allows for rolling out an update while keeping the service available.
-    * Bastion Host - I decided to implement the Azure Bastion service as it provides a security way to SSH and RDP onto systems without the need to build a bastion host or jump box.
     * Tagging Policy Definition and Assignment - Through Terraform, I was able to create the tagging policy definition and assignment thus it is included in the terraform.
 
 ## References

@@ -8,7 +8,8 @@
 *.tfvars
 *.plan
 *.lock.hcl
-
+az_policy_assignment.png
+terraformapply.txt
 
 *.terraform.lock.hcl
 

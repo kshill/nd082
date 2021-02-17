@@ -10,7 +10,7 @@
     * [Grant the App Registration Subscription Permissions](#grant-the-app-registration-subscription-permissions)
     * [Setting Up Environmental Variables for Packer](#setting-up-environmental-variables-for-packer)
     * [Creating Packer Resource Group](#creating-packer-resource-group)
-    * [Create Packer Image](#create-packer-image)
+    * [Create Packer Image](#build-packer-image)
     * [Configure Terraform](#configure-terraform)
     * [Build Solution Using Terraform](#build-solution-using-terraform)
 * [Output](#output)
@@ -19,16 +19,15 @@
 
 
 ## Introduction
-For this project, you will write a Packer template and a Terraform template to deploy a customizable, scalable web server in Azure.
+
+The nd082 project builds a scalable Nginx webserver(s) using an Azure virtual machine scaleset front ended by an Azure load balancer. The OS and the webserver installation is built using a packer image and Terraform is used to build out the Azure infrastructure.
 
 ## Getting Started
+
 1. Clone this repository
 
-2. Create your infrastructure as code
-
-3. Update this README to reflect how someone would use your code.
-
 ## Dependencies
+
 1. Create an [Azure Account](https://portal.azure.com) 
 2. Install the [Azure command line interface](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 3. Install [Packer](https://www.packer.io/downloads)
@@ -40,32 +39,32 @@ For this project, you will write a Packer template and a Terraform template to d
 
 *Note: A Service principal will be used within Terraform that has permissions to create/modify/delete resources within the subscription. The following steps will create the service principal that will be used by terraform.*
 
-1. Log into the Azure portal by going to https://portal.azure.com
+1. Log into the Azure portal by going to `https://portal.azure.com`
 1. While logged into the portal, go to the Azure Active Directory blade.
-1.  Click on App registrations
+1. Click on **App registrations**
 1. Click on "New Registration"
     * Enter in a friendly name of the app registration.
     * Select "Account in this organizational directory only (Default Directory only - Single tenant)
     * Click on Register
-1. A new app registration blade will be show with the friendly name of the app registration that was just created.
+1. A new app registration blade will be shown with the friendly name of the app registration that was just created.
 1. Copy and store both the "**Application (client) ID**" and the "**Directory (tenant) ID**" as they will be needed in future steps.
-1. Click on "Certificates & Secrets".
-1. Click on "+ New client secret".
+1. Click on **Certificates & Secrets**.
+1. Click on "**+ New client secret**".
     * Provide a description for the cleint secret.
     * Select Expires - In 1 year
 1. Copy the **Value** of the secret and store it in a safe place as it will be used in the future.
-1. Click on Home. 
+1. Click on Home.
 
 ### Grant the App Registration Owner Rights In The Subscription
 
 *Note: The app registration created will need to be given permissions in order to create/modify/delete Azure resources within the subscription.*
 
-1. Click on Subscriptions.
+1. Click on **Subscriptions**.
 1. Click on the subscription that you will be working on.
 1. Copy and store the "Subscription ID" as it will be used in future steps.
-1. Click on Access Control.
-1. Click on Role Assignments.
-1. Click on "+ Add".
+1. Click on **Access Control**.
+1. Click on **Role Assignments**.
+1. Click on "**+ Add**".
 1. Select add role assignment.
 1. On the right side of the screen the "Add role assignment" blade will open.
     * Select the Owner role
@@ -87,17 +86,17 @@ For this project, you will write a Packer template and a Terraform template to d
 
 ### Creating Packer Resource Group
 
-1. While in the Azure portal click on resource groups.
-1. Click on "+ Add"
+1. While in the Azure portal click on **Resource Groups**.
+1. Click on "**+ Add**"
 1. Create a new resource group called **packer-rg** in the (US) East US region.
-1. Click on "Next: Tag".
-1. Add a tag named **Project** with a value of **Udacity**.
-1. Click on Review + Create
-1. Click on Create
+1. Click on "**Next: Tag**".
+1. Add a tag named **Project** with a value of **nd082**.
+1. Click on **Review + Create**
+1. Click on **Create**
 
-### Create Packer Image
+### Build Packer Image
 
-1. Open Terminal and navigate to the "C1 - Azure Infrastructure Operations/project/starter_files/Packer" directory.
+1. Open Terminal and navigate to the "nd082" directory that was cloned from the repository.
 1. At the terminal prompt execute the following command:
 
     ```dotnetcli
@@ -108,9 +107,11 @@ For this project, you will write a Packer template and a Terraform template to d
 1. After packer completes the build task, a new packer built OS image called "UbuntuWebServer_Packer" will exist in the packer-rg resource group.
 
 ### Configure Terraform
-1. Navigate to the "C1 - Azure Infrastructure Operations/project/starter_files/IaC" directory.
+
+1. Navigate to the "nd082" directory.
 1. Create a new file called **terraform.tfvars** in the directory.
-1. Open the **terraform.tfvars** file with a text editor and add the following to file. Replace all identifiers between the quotes with the actual values. You can set the instance_count to the number of instance that you would like to run behind the loadbalancer.
+1. Open the **terraform.tfvars** file with a text editor and add the following to file. Replace all identifiers between the quotes with the actual values.
+1. Two instances will be created based on the configuration below. Modify the instance_count variable if you would like to increase or decrease the number of instances.
 
     ```dotnetcli
     clientid = "<Application (client) ID>"
@@ -121,19 +122,30 @@ For this project, you will write a Packer template and a Terraform template to d
     admin_password = "<admin password>"
     instance_count = 2
     project = "nd082"
+    contact = "<Owner Displayname>"
     ```
 
 ### Build Solution Using Terraform
 
-1. Open Terminal and navigate to the "C1 - Azure Infrastructure Operations/project/starter_files/IaC"
-1. At the terminal prompt, execute the following command to create the Azure Web Server Solution:
+1. Open Terminal and navigate to the "nd082"
+1. At the terminal prompt, execute the following command to initialize Terraform:
 
     ```dotnetcli
     terraform init
+    ```
+
+1. At the terminal prompt, execute the following command to validate the resources that will be created for the solution:
+
+    ```dotnetcli
     terraform plan
+    ```
+1. At the terminal prompt, execute the following command to build the Azure web server solution:
+
+    ```dotnetcli
     terraform apply
     ```
 
+1. Enter in **yes** when presented with the confirmation prompt.
 1. When the terraform has completed it will output the public IP of the load balancer. Copy and save the public IP for future use.
 
 ### Output

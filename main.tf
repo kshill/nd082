@@ -94,7 +94,7 @@ resource "azurerm_resource_group" "main_rg" {
   tags = merge (
     local.common_tags,
     map(
-      "Contact", "Kita Shillingford"
+      "Contact", var.contact
     )
   )
 }
@@ -111,7 +111,7 @@ resource "azurerm_virtual_network" "main_vnet" {
   tags = merge (
     local.common_tags,
     map(
-      "Contact", "Kita Shillingford"
+      "Contact", var.contact
     )
   )
 }
@@ -133,7 +133,7 @@ resource "azurerm_public_ip" "public_ip" {
   tags = merge (
     local.common_tags,
     map(
-      "Contact", "Kita Shillingford"
+      "Contact", var.contact
     )
   )
 }
@@ -148,7 +148,7 @@ resource "azurerm_public_ip" "outbound_public_ip" {
   tags = merge (
     local.common_tags,
     map(
-      "Contact", "Kita Shillingford"
+      "Contact", var.contact
     )
   )
 }
@@ -173,7 +173,7 @@ resource "azurerm_public_ip" "outbound_public_ip" {
   tags = merge (
     local.common_tags,
     map(
-      "Contact", "Kita Shillingford"
+      "Contact", var.contact
     )
   )
 }
@@ -201,7 +201,7 @@ resource "azurerm_application_security_group" "udacity_webserver_asg" {
   tags = merge (
     local.common_tags,
     map(
-      "Contact", "Kita Shillingford"
+      "Contact", var.contact
     )
   )
 } 
@@ -231,7 +231,7 @@ resource "azurerm_lb" "udacity_lb" {
   tags = merge (
     local.common_tags,
     map(
-      "Contact", "Kita Shillingford"
+      "Contact", var.contact
     )
   )
 
@@ -328,7 +328,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "main" {
   tags = merge (
     local.common_tags,
     map(
-      "Contact", "Kita Shillingford"
+      "Contact", var.contact
     )
   )
 }

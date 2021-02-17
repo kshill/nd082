@@ -24,6 +24,8 @@ variable "admin_username" {}
 
 variable "admin_password" {}
 
+variable "contact" {}
+
 variable "cust_scope" {
     default = "/subscriptions/"
 }

@@ -2,19 +2,19 @@
 
 **Table Of Content**
 
-* [Introduction](#Introduction)
-* [Getting Started](#GettingStarted)
-* [Dependencies](#Dependencies)
+* [Introduction](#introduction)
+* [Getting Started](#getting-Started)
+* [Dependencies](#dependencies)
 * Instructions
-    * [Create Azure App Registration](#Create-Azure-App-Registration)
-    * [Grant the App Registration Subscription Permissions](#Grant-the-App-Registration-Subscription-Permissions)
-    * [Setting Up Environmental Variables for Packer](#Setting-Up-Environmental-Variables-for-Packer)
-    * [Creating Packer Resource Group](#Creating-Packer-Resource-Group)
-    * [Create Packer Image](#Create-Packer-Image)
-    * [Configure Terraform](#Configure-Terraform)
-    * [Build Solution Using Terraform](#Build-Solution-Using-Terraform)
-* [Output](#Output)
-* [References](#References)
+    * [Create Azure App Registration](#create-azure-app-registration)
+    * [Grant the App Registration Subscription Permissions](#grant-the-app-registration-subscription-permissions)
+    * [Setting Up Environmental Variables for Packer](#setting-up-environmental-variables-for-packer)
+    * [Creating Packer Resource Group](#creating-packer-resource-group)
+    * [Create Packer Image](#create-packer-image)
+    * [Configure Terraform](#configure-terraform)
+    * [Build Solution Using Terraform](#build-solution-using-terraform)
+* [Output](#output)
+* [References](#references)
 
 
 
